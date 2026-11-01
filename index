@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>S7 作戦室｜シーズン7情報ガイド モック</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E4DCC5; --surface:#F1ECDD; --surface2:#EAE3CF; --ink:#1F2A31; --muted:#56615C;
+  --line:#C6BB9C; --accent:#C97A12; --accent-ink:#1F2A31; --steel:#2E4552; --steel-ink:#F1ECDD;
+  --alert:#A8402C; --ok:#46703F; --warn:#9A6A0E; --hl:rgba(201,122,18,.18);
+  --font-display:"Dela Gothic One","Hiragino Kaku Gothic StdN","Yu Gothic",sans-serif;
+  --font-body:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#172128; --surface:#1F2C34; --surface2:#25343D; --ink:#E4DCC5; --muted:#9BA8A3;
+    --line:#33454F; --accent:#E8A23A; --accent-ink:#172128; --steel:#8DB0C2; --steel-ink:#172128;
+    --alert:#E07A64; --ok:#8CC07F; --warn:#E3B45A; --hl:rgba(232,162,58,.18); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#172128; --surface:#1F2C34; --surface2:#25343D; --ink:#E4DCC5; --muted:#9BA8A3;
+  --line:#33454F; --accent:#E8A23A; --accent-ink:#172128; --steel:#8DB0C2; --steel-ink:#172128;
+  --alert:#E07A64; --ok:#8CC07F; --warn:#E3B45A; --hl:rgba(232,162,58,.18); color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.75}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--steel)}
+img,svg{max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+a{color:inherit}
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--steel);color:var(--steel-ink)}
+.top-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 20px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;margin-right:auto;text-decoration:none}
+.stamp{font-family:var(--font-display);font-size:24px;line-height:1;padding:6px 9px 4px;border:3px solid var(--accent);color:var(--accent);transform:rotate(-4deg)}
+.brand .name{font-family:var(--font-display);font-size:21px;letter-spacing:.04em;display:block;line-height:1.2}
+.brand small{display:block;font-size:12px;opacity:.8}
+nav.tabs{display:flex;gap:4px;flex-wrap:wrap}
+nav.tabs a{text-decoration:none;padding:5px 12px;border-radius:4px;font-weight:500;font-size:14px;opacity:.85}
+nav.tabs a[aria-current="page"]{background:var(--accent);color:var(--accent-ink);opacity:1}
+.theme-btn{background:none;border:1px solid currentColor;border-radius:4px;padding:3px 9px;font-size:13px;cursor:pointer;opacity:.8}
+.notice{max-width:1180px;margin:12px auto 0;padding:0 20px;font-size:13px;color:var(--muted)}
+.notice span{border-left:4px solid var(--warn);padding-left:8px}
+main{max-width:1180px;margin:0 auto;padding:16px 20px 48px}
+.view{display:none}.view.active{display:block}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 18px;margin-bottom:18px}
+.panel h2,.qs h2{font-family:var(--font-display);font-weight:400;font-size:17px;margin:0 0 6px;letter-spacing:.03em}
+.panel > p.lead{margin:0 0 12px;color:var(--muted);font-size:14px}
+.btn{background:var(--accent);color:var(--accent-ink);border:none;border-radius:4px;padding:8px 16px;font-weight:700;cursor:pointer}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line);font-weight:500}
+.btn.small{padding:4px 11px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:default}
+.field{display:flex;flex-direction:column;gap:3px;font-size:13px;margin-bottom:10px}
+.field > span{color:var(--muted)}
+.field input,.field select,.field textarea,select.inl{padding:7px 9px;border:1px solid var(--line);border-radius:4px;background:var(--bg)}
+.muted{color:var(--muted)}
+.tbl-scroll{overflow-x:auto}
+.tl{border-collapse:collapse;width:100%;font-size:14px}
+.tl th,.tl td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.tl th{font-weight:700;white-space:nowrap}
+.tl tr.now > *{background:var(--hl)}
+.badge{font-size:11px;font-weight:700;padding:0 6px;border-radius:3px;color:var(--bg);white-space:nowrap}
+.b-official{background:var(--steel)}.b-verified{background:var(--ok)}.b-player{background:var(--warn)}.b-stale{background:var(--alert)}
+
+/* home */
+.home{padding:28px 0 10px}
+.hero-t{font-family:var(--font-display);font-weight:400;font-size:clamp(28px,5vw,46px);line-height:1.25;margin:0 0 10px;max-width:17em}
+.home > p{max-width:40em;margin:0 0 28px;color:var(--muted)}
+.doors{display:grid;grid-template-columns:1.4fr 1fr;gap:18px}
+@media (max-width:760px){.doors{grid-template-columns:1fr}}
+.door{display:flex;flex-direction:column;gap:6px;text-decoration:none;padding:22px 24px;border-radius:6px;border:1px solid var(--line);background:var(--surface);min-height:190px}
+.door-main{background:var(--steel);color:var(--steel-ink);border-color:var(--steel)}
+.door-t{font-family:var(--font-display);font-size:26px;line-height:1.3}
+.door-cta{margin-top:auto;align-self:flex-start;background:var(--accent);color:var(--accent-ink);font-weight:700;padding:7px 16px;border-radius:4px}
+.door-admin .door-cta{background:none;border:1px solid var(--line);color:var(--ink)}
+.door small{opacity:.8;font-size:13px}
+.home-foot{margin-top:22px;font-size:14px}
+
+/* ask */
+.cond{display:flex;flex-wrap:wrap;gap:4px 16px;align-items:flex-end}
+.cond .field{margin-bottom:0;min-width:150px}
+.cond-now{flex-basis:100%;margin:10px 0 0;font-size:14px;border-top:1px solid var(--line);padding-top:8px}
+.cond-now strong{font-family:var(--font-display);font-weight:400;font-size:18px;color:var(--accent)}
+.ask-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:22px;align-items:start}
+@media (max-width:900px){.ask-grid{grid-template-columns:1fr}}
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin-bottom:10px}
+.qcard.fit{border-left:4px solid var(--accent)}
+.qtext{margin:0 0 8px;line-height:2.1}
+.qtext select{padding:2px 6px;margin:0 2px;font-weight:700}
+.qfoot{display:flex;align-items:center;gap:10px}
+.qfoot .tag{font-size:12px;color:var(--accent);font-weight:700}
+.kw{display:flex;gap:8px;margin-top:14px}
+.kw input{flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:4px;background:var(--surface)}
+.ans-pane{position:sticky;top:84px}
+@media (max-width:900px){.ans-pane{position:static}}
+.empty{border:2px dashed var(--line);border-radius:6px;padding:28px;color:var(--muted);text-align:center}
+.answer{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.answer header{background:var(--surface2);padding:12px 16px;border-bottom:1px solid var(--line)}
+.a-q{margin:0 0 6px;font-weight:700}
+.cchip{display:inline-block;font-size:12px;border:1px solid var(--line);border-radius:999px;padding:0 9px;margin:2px 4px 2px 0;background:var(--bg)}
+.a-body{padding:12px 16px}
+.a-body p{margin:.2em 0 .7em}
+.a-body h3{font-size:15px;margin:14px 0 6px}
+.a-body ol,.a-body ul{padding-left:1.3em;margin:.3em 0 .8em}
+.warn-line{border-left:4px solid var(--alert);padding:4px 10px;background:var(--hl);font-size:14px;margin:8px 0}
+.shots{display:flex;gap:10px;flex-wrap:wrap;padding:0 16px 8px}
+.shot{width:132px;border:1px solid var(--line);border-radius:4px;background:var(--surface2);cursor:zoom-in;padding:0;text-align:left;overflow:hidden}
+.shot svg{display:block;width:100%;height:auto}
+.shot span{display:block;font-size:12px;padding:3px 8px;color:var(--muted)}
+.sources{padding:4px 16px 0;font-size:13px}
+.src{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:4px;padding:1px 8px;margin:3px 6px 3px 0;background:var(--bg)}
+.fb{display:flex;gap:6px;flex-wrap:wrap;padding:10px 16px 14px}
+details.hist{margin-top:12px;font-size:14px}
+details.hist button{background:none;border:none;padding:2px 0;cursor:pointer;text-decoration:underline;text-align:left}
+
+
+/* chat layout */
+.chat-wrap{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:20px;align-items:start}
+@media (max-width:900px){.chat-wrap{grid-template-columns:1fr}.side{order:-1}}
+.chat{background:var(--surface);border:1px solid var(--line);border-radius:6px;display:flex;flex-direction:column;height:calc(100vh - 200px);min-height:540px}
+@media (max-width:900px){.chat{height:auto;min-height:0}.log{max-height:75vh;min-height:320px}}
+.log{flex:1;overflow-y:auto;padding:16px}
+.msg{margin:0 0 16px}
+.msg.user{margin-left:auto;max-width:80%;width:fit-content;background:var(--steel);color:var(--steel-ink);padding:8px 14px;border-radius:12px 12px 2px 12px}
+.msg.bot .who{font-size:12px;color:var(--muted);margin-bottom:4px}
+.msg.bot .answer{max-width:720px}
+.plain{border-left:3px solid var(--accent);padding:2px 0 2px 12px;max-width:720px}
+.plain p{margin:.2em 0 .6em}
+.plain select{margin:0 4px 6px 0}
+.typing{color:var(--muted);font-size:13px;margin-bottom:12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px;border-top:1px solid var(--line)}
+.chip{background:var(--surface2);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:13px;cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.composer{display:flex;gap:8px;padding:10px 14px 14px;border-top:1px solid var(--line)}
+.composer input{flex:1;min-width:0;padding:9px 11px;border:1px solid var(--line);border-radius:4px;background:var(--bg)}
+.side{position:sticky;top:84px}
+@media (max-width:900px){.side{position:static}}
+.side .panel{padding:14px 16px;margin-bottom:14px}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+.cgrid .field{margin-bottom:8px}
+.wklabel{font-size:13px;color:var(--muted)}
+.wkbtns{display:grid;grid-template-columns:repeat(9,1fr);gap:3px;margin:4px 0 6px}
+.wkbtns button{padding:5px 0 4px;border:1px solid var(--line);background:var(--bg);border-radius:3px;cursor:pointer;font-weight:700;font-size:14px;line-height:1.3}
+.wkbtns button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.wkbtns small{display:block;font-size:9px;font-weight:500;line-height:1}
+#condNow{font-size:13px;margin:0}
+#condNow button{background:none;border:none;padding:0;text-decoration:underline;cursor:pointer;font-size:13px}
+#wkTheme{font-size:13px;margin:0 0 6px;color:var(--muted)}
+.evday{margin:8px 0 0;font-size:13px;font-weight:700;color:var(--muted)}
+.evday.today{color:var(--accent)}
+.ev{display:flex;gap:8px;align-items:baseline;width:100%;text-align:left;background:none;border:none;border-bottom:1px dashed var(--line);padding:5px 2px;cursor:pointer;font-size:14px}
+.ev:hover{background:var(--hl)}
+.ev .tm{font-weight:700;min-width:3.1em}
+.side h3{font-size:14px;margin:12px 0 4px}
+.side ul{margin:0;padding-left:1.1em;font-size:13px}
+
+/* zukan */
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.filters button[aria-pressed="true"]{background:var(--steel);color:var(--steel-ink);border-color:var(--steel)}
+.zgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.zcard{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:0;text-align:left;cursor:pointer;overflow:hidden}
+.zcard svg{display:block;width:100%;height:auto}
+.zcard .zt{padding:8px 12px 10px}
+.zcard strong{display:block}
+.zcard small{color:var(--muted)}
+
+/* admin */
+.admin-head{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between}
+.pubbar{display:flex;gap:10px;align-items:center}
+.pending{font-weight:700;color:var(--accent)}
+.subtabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px;border-bottom:2px solid var(--line)}
+.subtabs button{background:none;border:none;padding:8px 14px;cursor:pointer;font-weight:500;border-bottom:3px solid transparent;margin-bottom:-2px}
+.subtabs button[aria-selected="true"]{border-bottom-color:var(--accent);font-weight:700}
+.sub{display:none}.sub.active{display:block}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:860px){.two{grid-template-columns:1fr}}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+@media (max-width:600px){.stats{grid-template-columns:1fr}}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 16px}
+.stat b{font-family:var(--font-display);font-weight:400;font-size:30px;display:block;line-height:1.2}
+.roles{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px;font-size:14px}
+.drop{border:2px dashed var(--line);border-radius:6px;padding:20px;text-align:center;color:var(--muted);cursor:pointer;background:var(--bg)}
+.drop:hover{border-color:var(--accent)}
+.pipeline{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 0;font-size:13px}
+.step{padding:2px 10px;border-radius:3px;border:1px solid var(--line);color:var(--muted)}
+.step.done{background:var(--ok);color:var(--bg);border-color:var(--ok)}
+.step.doing{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.box{margin-top:12px;background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:10px 12px;display:none}
+.box textarea{width:100%;min-height:86px;border:1px solid var(--line);border-radius:4px;background:var(--surface);padding:6px}
+.row-btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tl input,.tl select{padding:3px 6px;border:1px solid var(--line);border-radius:3px;background:var(--bg);max-width:150px}
+
+/* spec */
+.spec{display:grid;grid-template-columns:210px minmax(0,1fr);gap:28px}
+@media (max-width:860px){.spec{grid-template-columns:1fr}.toc{position:static!important}}
+.toc{position:sticky;top:84px;align-self:start;font-size:14px}
+.toc button{display:block;background:none;border:none;padding:3px 0;cursor:pointer;color:var(--muted);text-align:left}
+.toc button:hover{color:var(--ink)}
+.doc{max-width:820px}
+.doc h2{font-family:var(--font-display);font-weight:400;font-size:21px;margin:34px 0 8px;padding-top:6px;border-top:3px solid var(--ink)}
+.doc h2:first-child{margin-top:0}
+.doc h3{font-size:16px;margin:20px 0 6px}
+.doc p,.doc li{max-width:72ch}
+.doc table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0 14px}
+.doc th,.doc td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+.doc thead th{background:var(--surface2)}
+.doc pre{background:var(--surface);border:1px solid var(--line);padding:12px;border-radius:4px;overflow-x:auto;font-size:13px;line-height:1.55}
+.pri{font-weight:700}.p-must{color:var(--alert)}.p-should{color:var(--warn)}.p-could{color:var(--muted)}
+.q{background:var(--surface);border-left:4px solid var(--accent);padding:10px 14px;margin:10px 0;border-radius:0 4px 4px 0}
+
+dialog{border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);max-width:min(560px,92vw);padding:16px}
+dialog::backdrop{background:rgba(10,15,18,.6)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--steel);color:var(--steel-ink);padding:8px 16px;border-radius:4px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20;max-width:90vw}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion: reduce){.toast{transition:none}}
+.sr{position:absolute;left:-9999px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="#home" aria-label="トップへ">
+      <span class="stamp" aria-hidden="true">S7</span>
+      <span><span class="name">作戦室</span><small id="modeLabel">ラストウォー シーズン7 情報ガイド</small></span>
+    </a>
+    <nav class="tabs" id="nav" aria-label="画面切り替え"></nav>
+    <button class="theme-btn" id="themeBtn" type="button">表示切替</button>
+  </div>
+</header>
+<p class="notice"><span>モックです。サーバー番号・日程・施設・敵・スキル名などのシーズン情報はすべてダミー（仮）で、基準日は 11/1（日）に固定しています。</span></p>
+
+<main>
+<!-- ================= HOME ================= -->
+<section class="view" id="view-home" aria-label="トップ">
+  <div class="home">
+    <h2 class="hero-t">シーズン7、いま何をすればいい？</h2>
+    <p>サーバーと進み具合を選ぶだけで、その週・その日にやることが分かります。答えは同盟で確認した情報だけから出しています。</p>
+    <div class="doors">
+      <a class="door door-main" href="#ask">
+        <span class="door-t">みんなの画面</span>
+        <span>条件を選んで質問する／施設や敵の図鑑を見る</span>
+        <small>ログイン不要・スマホ向け</small>
+        <span class="door-cta">調べる</span>
+      </a>
+      <a class="door door-admin" href="#admin">
+        <span class="door-t">管理者</span>
+        <span>情報の登録・確認・公開</span>
+        <small>オーナーと共同管理者のみ（Googleアカウントでログイン）</small>
+        <span class="door-cta">管理画面を開く</span>
+      </a>
+    </div>
+    <p class="home-foot"><a href="#spec">仕様書を読む</a></p>
+  </div>
+</section>
+
+<!-- ================= ASK ================= -->
+<section class="view" id="view-ask" aria-label="みんなの画面：調べる">
+  <div class="chat-wrap">
+    <div class="chat">
+      <div class="log" id="log" aria-live="polite"></div>
+      <div class="chips" id="chips"></div>
+      <form class="composer" id="kw">
+        <label for="kwIn" class="sr">質問</label>
+        <input id="kwIn" placeholder="質問を入力（例：今週やることは？ 水曜の夜は？ ボス）" autocomplete="off">
+        <button class="btn" type="submit">送る</button>
+      </form>
+    </div>
+    <aside class="side">
+      <section class="panel">
+        <h2>あなたの条件</h2>
+        <div class="cgrid">
+          <label class="field"><span>サーバー</span><select id="cServer"></select></label>
+          <label class="field"><span>職業</span><select id="cJob">
+            <option value="eng">エンジニア</option><option value="war">戦争指導者</option></select></label>
+          <label class="field" style="grid-column:1/-1"><span>作戦計画システム</span><select id="cStyle">
+            <option value="atk">突撃計画（仮）</option><option value="def">堅守計画（仮）</option><option value="sup">補給計画（仮）</option><option value="unk">まだ選んでいない</option></select></label>
+        </div>
+        <div class="wklabel">シーズンの週を選ぶ</div>
+        <div class="wkbtns" id="wkBtns" role="group" aria-label="シーズンの週"></div>
+        <p id="condNow"></p>
+      </section>
+      <section class="panel">
+        <h2 id="evTitle">今週のイベント</h2>
+        <p id="wkTheme"></p>
+        <div id="evList"></div>
+        <h3>この週のバフ</h3>
+        <ul id="bfList"></ul>
+      </section>
+    </aside>
+  </div>
+</section>
+
+<!-- ================= ZUKAN ================= -->
+<section class="view" id="view-zukan" aria-label="みんなの画面：図鑑">
+  <div class="filters" id="zFilters">
+    <button class="btn ghost small" type="button" data-f="all" aria-pressed="true">すべて</button>
+    <button class="btn ghost small" type="button" data-f="施設" aria-pressed="false">シーズン施設</button>
+    <button class="btn ghost small" type="button" data-f="敵" aria-pressed="false">シーズンの敵</button>
+    <button class="btn ghost small" type="button" data-f="スキル" aria-pressed="false">シーズンスキル</button>
+  </div>
+  <div class="zgrid" id="zgrid"></div>
+</section>
+
+<!-- ================= ADMIN ================= -->
+<section class="view" id="view-admin" aria-label="管理者画面">
+  <div class="panel admin-head">
+    <div>ログイン中：<strong>カニカフ</strong>（オーナー）<br><small class="muted">この画面は管理者として登録されたGoogleアカウントだけが開けます</small></div>
+    <div class="pubbar"><span class="pending" id="pendingN"></span><button class="btn" id="pubBtn" type="button">みんなの画面に反映</button></div>
+  </div>
+  <div class="subtabs" role="tablist" id="subtabs">
+    <button type="button" role="tab" data-sub="dash" aria-selected="true">ダッシュボード</button>
+    <button type="button" role="tab" data-sub="reg" aria-selected="false">情報を登録</button>
+    <button type="button" role="tab" data-sub="list" aria-selected="false">登録一覧</button>
+    <button type="button" role="tab" data-sub="data" aria-selected="false">シーズンデータ</button>
+    <button type="button" role="tab" data-sub="members" aria-selected="false">管理メンバー</button>
+  </div>
+
+  <div class="sub active" id="sub-dash">
+    <div class="stats">
+      <div class="stat"><b id="stReq">4</b>答えられなかった質問</div>
+      <div class="stat"><b>2</b>要確認（古い可能性）</div>
+      <div class="stat"><b>9</b>今週の登録</div>
+    </div>
+    <div class="panel">
+      <h2>情報リクエスト</h2>
+      <p class="lead">みんなの画面で答えが見つからなかった質問です。担当を決めて情報を登録します。</p>
+      <div class="tbl-scroll"><table class="tl" id="reqTable"><thead><tr><th>質問</th><th>件数</th><th>担当</th><th>状態</th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="sub" id="sub-reg">
+    <div class="two">
+      <div class="panel">
+        <h2>画像を登録</h2>
+        <p class="lead">使い方を選んでから画像を選びます。</p>
+        <div class="roles" role="radiogroup" aria-label="画像の使い方">
+          <label><input type="radio" name="irole" value="read" checked> 読み取り用（文字を取り出す）</label>
+          <label><input type="radio" name="irole" value="show"> 見せる用（図鑑・答えに表示）</label>
+          <label><input type="radio" name="irole" value="both"> 両方</label>
+        </div>
+        <div class="drop" id="drop" role="button" tabindex="0">ここをクリックして画像を選ぶ（モックでは擬似処理）</div>
+        <div class="pipeline" id="pipe"></div>
+        <div class="box" id="ocrBox">
+          <strong>読み取り結果（ドライブOCR）</strong> <small class="muted">直してから確認してください</small>
+          <textarea aria-label="読み取り結果">研究所（仮）Lv.5
+必要資材 鋼材 1,200 ／ 特殊合金 300
+効果 同盟メンバーの研究速度 +5%</textarea>
+          <div class="row-btns"><button class="btn small" type="button" id="ocrOk">内容OK</button><button class="btn ghost small" type="button" id="ocrGem">表が崩れているのでGeminiで読み直す</button><button class="btn ghost small" type="button" id="ocrNg">やめる</button></div>
+        </div>
+        <div class="box" id="showBox">
+          <strong>図鑑・答えに表示する情報</strong>
+          <div class="two" style="gap:10px;margin-top:8px">
+            <label class="field"><span>名前</span><input id="sName" value="研究所（仮）"></label>
+            <label class="field"><span>種類</span><select id="sKind"><option>施設</option><option>敵</option><option>スキル</option><option>イベント</option></select></label>
+            <label class="field"><span>別名・呼び方（カンマ区切り）</span><input id="sAlias" value="ラボ, けんきゅうじょ"></label>
+            <label class="field"><span>関連する質問</span><select><option>シーズン施設は何から上げる？</option><option>今週やることは？</option><option>関連なし</option></select></label>
+          </div>
+          <label class="field"><span>短い説明</span><textarea id="sDesc">同盟全体の研究速度を上げるシーズン施設（ダミー）</textarea></label>
+          <div class="row-btns"><button class="btn small" type="button" id="showOk">登録する</button><button class="btn ghost small" type="button" id="showDraft">説明の下書きをGeminiに作らせる</button></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>参照URLを登録</h2>
+        <p class="lead">他の人がまとめた信頼できるページを1件ずつ登録します。自動巡回はしません。</p>
+        <label class="field"><span>URL</span><input id="url" type="url" placeholder="https://"></label>
+        <label class="field"><span>表示名</span><input id="urlTitle" placeholder="例：〇〇さんのS7まとめ"></label>
+        <label class="field"><span>信頼区分</span><select id="urlTrust"><option value="official">公式</option><option value="verified">検証済み</option><option value="player">プレイヤー報告</option></select></label>
+        <label class="field"><span>転載の扱い</span><select><option>要点とリンクのみ表示</option><option>作者の了承あり（画像も掲載可）</option></select></label>
+        <button class="btn" id="addUrl" type="button">URLを登録</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub" id="sub-list">
+    <div class="panel">
+      <h2>登録一覧</h2>
+      <div class="filters" id="lFilters">
+        <button class="btn ghost small" type="button" data-f="all" aria-pressed="true">すべて</button>
+        <button class="btn ghost small" type="button" data-f="読み取り" aria-pressed="false">読み取り用画像</button>
+        <button class="btn ghost small" type="button" data-f="見せる" aria-pressed="false">見せる用画像</button>
+        <button class="btn ghost small" type="button" data-f="URL" aria-pressed="false">URL</button>
+        <button class="btn ghost small" type="button" data-f="未" aria-pressed="false">未反映・要確認</button>
+      </div>
+      <div class="tbl-scroll"><table class="tl" id="srcTable"><thead><tr><th>種類</th><th>表示名</th><th>カテゴリ</th><th>信頼区分</th><th>確認日</th><th>状態</th><th>登録者</th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="sub" id="sub-data">
+    <div class="panel">
+      <h2>サーバーとシーズン開始日</h2>
+      <p class="lead">みんなの画面の「第◯週」「シーズン前」はこの表から自動で決まります。</p>
+      <div class="tbl-scroll"><table class="tl" id="srvTable"><thead><tr><th>サーバー</th><th>シーズン開始日</th><th>いまの状態（基準日 11/1）</th></tr></thead><tbody></tbody></table></div>
+    </div>
+    <div class="panel">
+      <h2>週ごとの予定</h2>
+      <p class="lead">「今週やることは？」の答えはこの表をそのまま表示します。AIは使いません。</p>
+      <div class="tbl-scroll"><table class="tl" id="wkTable"><thead><tr><th>週</th><th>テーマ</th><th>やること（優先順）</th></tr></thead><tbody></tbody></table></div>
+    </div>
+    <div class="panel">
+      <h2>曜日・時間の予定</h2>
+      <div class="tbl-scroll"><table class="tl" id="dyTable"><thead><tr><th>曜日</th><th>時刻</th><th>内容</th><th>何週目から</th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="sub" id="sub-members">
+    <div class="panel">
+      <h2>管理メンバー</h2>
+      <p class="lead">オーナーは1人。共同管理者は登録・確認・反映ができます。投稿者は登録だけできます。</p>
+      <div class="tbl-scroll"><table class="tl" id="memTable"><thead><tr><th>名前</th><th>Googleアカウント</th><th>役割</th></tr></thead><tbody></tbody></table></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:flex-end">
+        <label class="field" style="margin:0"><span>追加するGoogleアカウント</span><input id="memMail" placeholder="example@gmail.com"></label>
+        <label class="field" style="margin:0"><span>役割</span><select id="memRole"><option>共同管理者</option><option>投稿者</option></select></label>
+        <button class="btn" type="button" id="memAdd">追加</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SPEC ================= -->
+<section class="view" id="view-spec" aria-label="仕様書">
+  <div class="spec">
+    <nav class="toc" id="toc" aria-label="仕様書の目次"></nav>
+    <article class="doc" id="doc">
+
+<h2>目的と基本方針</h2>
+<p>シーズン7の情報（攻略、スケジュール、イベント、シーズンスキル、シーズン施設、シーズンバフ、シーズンの敵）を、だれでも「自分のサーバー」「いまの時期」に合わせて素早く確認できるようにする。</p>
+<ul>
+<li><strong>質問のときにAIを呼ばない。</strong>答えは登録済みの表データと図鑑から組み立てる。利用者が何人いてもAPI費用はかからない</li>
+<li><strong>AIを使うのは登録作業だけ。</strong>画像の文字読み取りや説明の下書きに限り、使うのは管理者だけ</li>
+<li><strong>使う側は条件を選ぶ。</strong>自由入力より、サーバー・週・曜日・時間・状態を選ぶ方式を主にする</li>
+<li><strong>根拠を必ず見せる。</strong>答えには出典（画像・URL）、信頼区分、確認日を付ける</li>
+</ul>
+
+<h2>画面構成</h2>
+<table>
+<thead><tr><th>入口</th><th>画面</th><th>使う人</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td rowspan="1">トップ</td><td>入口の振り分け</td><td>全員</td><td>「みんなの画面」と「管理者」の2つの入口</td></tr>
+<tr><td rowspan="2">みんなの画面</td><td>調べる</td><td>全員（ログイン不要）</td><td>中央にチャット（質問ボタン・自由入力・答え）、右側に条件と週の選択、選んだ週のイベント一覧とバフ</td></tr>
+<tr><td>図鑑</td><td>全員</td><td>シーズン施設・敵・スキルの画像と説明</td></tr>
+<tr><td rowspan="5">管理者</td><td>ダッシュボード</td><td>オーナー・共同管理者</td><td>答えられなかった質問、要確認、登録状況</td></tr>
+<tr><td>情報を登録</td><td>管理者・投稿者</td><td>画像（読み取り用／見せる用）、参照URL</td></tr>
+<tr><td>登録一覧</td><td>管理者</td><td>状態の確認、差し戻し、古い情報の更新</td></tr>
+<tr><td>シーズンデータ</td><td>管理者</td><td>サーバー別開始日、週ごとの予定、曜日・時間の予定、施設・スキル・バフの表</td></tr>
+<tr><td>管理メンバー</td><td>オーナー</td><td>共同管理者・投稿者の追加と役割変更</td></tr>
+</tbody></table>
+<p>本番では、みんなの画面と管理者画面は別のURLにする。みんなの画面は静的サイト、管理者画面はログイン必須のGASウェブアプリとし、トップから両方へリンクする。</p>
+
+<h2>条件を選ぶ質問</h2>
+<h3>右側パネルの条件（端末に保存）</h3>
+<table>
+<thead><tr><th>条件</th><th>選択肢</th><th>使い道</th></tr></thead>
+<tbody>
+<tr><td>サーバー</td><td>登録済みサーバー一覧</td><td>シーズン開始日を引き、「シーズン前／第◯週◯日目」を自動判定</td></tr>
+<tr><td>シーズンの週</td><td>前／1〜8 のボタン（いまの週に印）</td><td>押すと右側にその週のイベント一覧とバフが出る。チャットの答えもこの週を基準にする</td></tr>
+<tr><td>職業</td><td>エンジニア／戦争指導者</td><td>答えに職業ごとのひと言アドバイスを添える（施設担当・集結担当など）</td></tr>
+<tr><td>作戦計画システム</td><td>シーズン7で選べる計画（名称は実データで確定）／まだ選んでいない</td><td>スキルの振り方、施設の優先順を変える</td></tr>
+</tbody></table>
+<h3>質問テンプレート</h3>
+<table>
+<thead><tr><th>質問</th><th>利用者が選ぶ部分</th><th>答えの元データ</th></tr></thead>
+<tbody>
+<tr><td>シーズン前、シーズンインに向けてやることは？</td><td>開始までの期間（自動／2週間以上／1〜2週間／1週間以内／前日〜当日）</td><td>準備チェックリスト表</td></tr>
+<tr><td>いまシーズンは第◯週、今週やることは？</td><td>週（自動／第1〜8週）</td><td>週ごとの予定表、曜日・時間の予定表、バフ表</td></tr>
+<tr><td>シーズン中、◯曜日◯時、なにがある？なにをする？</td><td>曜日、時間帯</td><td>曜日・時間の予定表（何週目からかも考慮）</td></tr>
+<tr><td>シーズン施設は何から上げるべき？</td><td>施設の解放段階、重視すること（同盟貢献／個人戦力／資源）</td><td>施設表、優先順ルール、図鑑</td></tr>
+<tr><td>シーズンバフは？</td><td>週、種類（すべて／戦闘／生産）</td><td>バフ表</td></tr>
+<tr><td>シーズンスキルはいつどう振り分ける？</td><td>スタイル（週は条件から）</td><td>スキル表、振り分けルール、図鑑</td></tr>
+</tbody></table>
+<p>質問はチャット下のボタンか自由入力で行う。答えの下には「自分の戦力重視で見る」「戦闘のバフだけ」などの絞り込みボタンを出し、選ぶだけで条件を変えられるようにする。曜日・時間の質問は、チャット内に曜日と時間帯の選択欄を出して選んでもらう。右側のイベント一覧の項目を押すと、そのイベントで何をするかをチャットに答える。自由入力は「水曜の夜」「ボス」などの言葉から質問の種類や図鑑を判定し、該当がなければ情報リクエストとして管理者に送る。</p>
+
+<h2>画像の扱い</h2>
+<table>
+<thead><tr><th>使い方</th><th>例</th><th>登録の流れ</th><th>みんなの画面での出方</th></tr></thead>
+<tbody>
+<tr><td>読み取り用</td><td>告知文、報酬一覧、スキル説明</td><td>アップロード → ドライブOCR → 人が修正・確認 → 反映。表が崩れたものだけGeminiで読み直す</td><td>文字は表データ・答えに入り、画像は出典として小さく表示</td></tr>
+<tr><td>見せる用</td><td>シーズン施設、シーズンの敵、マップ</td><td>アップロード → 名前・種類・別名・説明・関連質問を付ける → 反映</td><td>図鑑と、関連する答えにサムネイル表示（タップで拡大）</td></tr>
+<tr><td>両方</td><td>施設画面のスクショ</td><td>上の2つを両方行う</td><td>両方</td></tr>
+</tbody></table>
+<ul>
+<li>画像はWebPに圧縮し、サムネイルも作ってGitHubのリポジトリに置く（Googleドライブ直リンクは表示が不安定なため使わない）</li>
+<li>プレイヤー名・同盟チャットが写った部分は登録時にぼかすか切り取る</li>
+<li>他の人が作った画像は、作者の了承があるものだけ掲載。了承がなければリンクで紹介</li>
+</ul>
+
+<h2>権限</h2>
+<table>
+<thead><tr><th>役割</th><th>できること</th></tr></thead>
+<tbody>
+<tr><td>オーナー（1人）</td><td>すべて。管理メンバーの追加・削除・役割変更、GitHub連携の設定</td></tr>
+<tr><td>共同管理者</td><td>登録、確認、差し戻し、シーズンデータの編集、みんなの画面への反映</td></tr>
+<tr><td>投稿者（任意）</td><td>画像・URLの登録のみ。公開には管理者の確認が必要</td></tr>
+<tr><td>一般</td><td>みんなの画面の閲覧のみ（ログイン不要）</td></tr>
+</tbody></table>
+
+<h2>機能要件</h2>
+<p>優先度は <span class="pri p-must">必須</span>／<span class="pri p-should">推奨</span>／<span class="pri p-could">任意</span>。</p>
+<table>
+<thead><tr><th>ID</th><th>要件</th><th>優先度</th></tr></thead>
+<tbody>
+<tr><td>A-01</td><td>サーバーを選ぶと、シーズン前か第何週かを基準日から自動判定する</td><td class="pri p-must">必須</td></tr>
+<tr><td>A-02</td><td>6つの質問テンプレートを、選択肢を変えて実行できる</td><td class="pri p-must">必須</td></tr>
+<tr><td>A-03</td><td>答えに表・画像・出典・確認日を表示する</td><td class="pri p-must">必須</td></tr>
+<tr><td>A-04</td><td>職業・作戦計画に合わせたひと言アドバイスを答えに添える</td><td class="pri p-must">必須</td></tr>
+<tr><td>A-05</td><td>図鑑で施設・敵・スキルを画像付きで見られる</td><td class="pri p-must">必須</td></tr>
+<tr><td>A-06</td><td>答えがない場合は情報リクエストとして送れる</td><td class="pri p-must">必須</td></tr>
+<tr><td>A-07</td><td>条件を端末に保存し、次回も同じ条件で開く</td><td class="pri p-should">推奨</td></tr>
+<tr><td>A-08</td><td>答えのURLを共有すると、同じ条件の答えが開く</td><td class="pri p-should">推奨</td></tr>
+<tr><td>A-09</td><td>サーバー時間と日本時間を並べて表示する</td><td class="pri p-should">推奨</td></tr>
+<tr><td>M-01</td><td>Googleアカウントでログインし、登録済みのメンバーだけ管理画面に入れる</td><td class="pri p-must">必須</td></tr>
+<tr><td>M-02</td><td>画像を読み取り用／見せる用で登録できる</td><td class="pri p-must">必須</td></tr>
+<tr><td>M-03</td><td>ドライブOCRで読み取り、人が修正してから反映する</td><td class="pri p-must">必須</td></tr>
+<tr><td>M-04</td><td>参照URLを信頼区分と転載の扱い付きで登録する</td><td class="pri p-must">必須</td></tr>
+<tr><td>M-05</td><td>シーズンデータ（開始日、週・曜日の予定、施設・スキル・バフ）を表で編集する</td><td class="pri p-must">必須</td></tr>
+<tr><td>M-06</td><td>「反映」ボタンでデータと画像をみんなの画面に書き出す</td><td class="pri p-must">必須</td></tr>
+<tr><td>M-07</td><td>共同管理者・投稿者を追加・変更する</td><td class="pri p-must">必須</td></tr>
+<tr><td>M-08</td><td>表が崩れた画像だけGeminiで読み直す</td><td class="pri p-should">推奨</td></tr>
+<tr><td>M-09</td><td>確認日から一定日数たった情報を「要確認」に戻す</td><td class="pri p-should">推奨</td></tr>
+<tr><td>M-10</td><td>登録者以外の管理者が確認してから反映する（二重確認）</td><td class="pri p-could">任意</td></tr>
+</tbody></table>
+
+<h2>データモデル（スプレッドシートのシート案）</h2>
+<pre>servers     : サーバー, シーズン開始日, 時差メモ
+weeks       : 週, テーマ, やること[優先順], 出典ID
+daily       : 曜日, 時刻, 内容, やること, 何週目から, 職業別メモ, 出典ID
+prep        : 期間(2w/1-2w/1w/前日), チェック項目, 出典ID
+facilities  : 施設ID, 解放段階, Lv別資材・効果, 優先順(同盟/個人/資源), 図鑑ID
+skills      : スキルID, 系統, 効果, 解放週, 作戦計画別の振り順
+buffs       : 週, 名前, 種類(戦闘/生産), 効果, 出典ID
+zukan       : 図鑑ID, 種類, 名前, 別名[], 説明, 画像パス, 関連質問
+sources     : 出典ID, 種類(読み取り/見せる/URL), 表示名, URL, 信頼区分,
+              転載可否, 確認日, 状態(下書き/確認待ち/公開/要確認), 登録者
+members     : Googleアカウント, 名前, 役割
+requests    : 質問, 件数, 担当, 状態</pre>
+
+<h2>構成</h2>
+<pre>[管理者]
+  GASウェブアプリ（Googleログイン, membersシートで権限確認）
+    ├ 画像 → ドライブOCR（無料） / 必要時のみ Gemini
+    ├ 編集 → スプレッドシート
+    └ 反映ボタン → JSONと圧縮画像を GitHub API でリポジトリへ書き込み
+
+[みんな]
+  GitHub Pages（静的HTML＋JS）
+    └ data.json と画像を読み込み、ブラウザ内で条件判定・検索・表示
+       ※ 質問時のサーバー処理・AI呼び出しなし
+
+[情報リクエスト]
+  みんなの画面 → GASの受付窓口（1端末1日◯件まで） → requestsシート</pre>
+<ul>
+<li>GitHubのトークンとGeminiのキーはGASのスクリプトプロパティにだけ置く</li>
+<li>Geminiは課金を有効にしていない専用プロジェクトのキーを使い、請求が発生しないようにする</li>
+</ul>
+
+<h2>非機能要件</h2>
+<table>
+<thead><tr><th>項目</th><th>目標</th></tr></thead>
+<tbody>
+<tr><td>費用</td><td>利用者側は0円。管理者の登録作業も無料枠内</td></tr>
+<tr><td>表示速度</td><td>初回表示3秒以内、質問の答えは即時（ブラウザ内処理）</td></tr>
+<tr><td>端末</td><td>スマホ縦画面を最優先、PCでも閲覧可</td></tr>
+<tr><td>公開範囲</td><td>URLを知っている人なら誰でも閲覧可（同盟外への公開は要相談）</td></tr>
+<tr><td>データ量</td><td>画像200枚程度・data.json 1MB以内を目安</td></tr>
+<tr><td>障害時</td><td>GASが止まっても、みんなの画面は最後に反映した内容で動く</td></tr>
+</tbody></table>
+
+<h2>運用ルール</h2>
+<ul>
+<li>登録 → 確認 → 反映 の流れ。反映した人と日時を記録する</li>
+<li>確認日から14日たった情報は「要確認」に戻す（日数は要相談）</li>
+<li>「情報が古い」と押された情報、答えられなかった質問はダッシュボードに集める</li>
+<li>新しいサーバーのシーズンが始まったら、サーバーと開始日を追加する</li>
+<li>シーズン終了時はデータを保存し、次シーズン用に複製する</li>
+</ul>
+
+<h2>進め方</h2>
+<table>
+<thead><tr><th>段階</th><th>内容</th><th>目安</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>このモックで壁打ち、質問テンプレートと条件を確定</td><td>1週</td></tr>
+<tr><td>2</td><td>スプレッドシートを作り、週・曜日・施設・スキル・バフを手入力</td><td>1週</td></tr>
+<tr><td>3</td><td>みんなの画面（条件判定と6つの質問）をGitHub Pagesで公開</td><td>1〜2週</td></tr>
+<tr><td>4</td><td>管理者画面（ログイン、画像・URL登録、反映）をGASで実装</td><td>2週</td></tr>
+<tr><td>5</td><td>図鑑、情報リクエスト、要確認の運用を追加</td><td>継続</td></tr>
+</tbody></table>
+
+<h2>壁打ちで決めたいこと</h2>
+<div class="q">6つの質問で足りるか。ほかに「いつも聞かれる質問」はあるか（例：資源の配分、同盟内の役割分担）。</div>
+<div class="q">条件は3つ（サーバー、職業、作戦計画システム）＋週で十分か。本部レベルなど、他に答えが変わる条件はあるか。</div>
+<div class="q">複数サーバー対応は必要か。最初は自サーバーだけで良いか。</div>
+<div class="q">共同管理者を誰に頼むか。週に1回、予定表を更新する人がいれば回るか。</div>
+<div class="q">参照する「他の人のまとめ」はどこか。画像の掲載許可は取れそうか。</div>
+<div class="q">同盟外にも公開するか。公開するならサーバーや同盟名の扱いをどうするか。</div>
+
+    </article>
+  </div>
+</section>
+</main>
+
+<dialog id="dlg"><div id="dlgBody"></div><div style="text-align:right;margin-top:10px"><button class="btn small" type="button" id="dlgClose">閉じる</button></div></dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s)};
+  var $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s))};
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function toast(m){var t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove('show')},2000)}
+
+  /* ---------- theme ---------- */
+  var root=document.documentElement;
+  try{var th=localStorage.getItem('s7theme');if(th)root.setAttribute('data-theme',th)}catch(e){}
+  $('#themeBtn').addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+    var nx=cur==='dark'?'light':'dark';root.setAttribute('data-theme',nx);try{localStorage.setItem('s7theme',nx)}catch(e){}
+  });
+
+  /* ---------- dummy data ---------- */
+  var TODAY=new Date(2026,10,1,12); // 11/1 (日) 固定
+  var DOW=['日','月','火','水','木','金','土'];
+  var servers=[{id:'720',start:'2026-10-14'},{id:'650',start:'2026-09-30'},{id:'815',start:'2026-11-11'},{id:'902',start:'2026-11-25'}];
+  var weeks={
+    1:{t:'開幕・スキル解放',todo:['シーズンスキルのポイントを振る（スキルの質問へ）','研究所（仮）を建てる','毎日の補給任務を受ける']},
+    2:{t:'施設 第1段階',todo:['研究所（仮）をLv5まで上げる','補給基地（仮）に着手','拠点争奪戦（仮）に向けて治療施設を空ける']},
+    3:{t:'拠点争奪戦（仮）開始・施設 第2段階',todo:['水・土の拠点争奪戦（仮）に参加','司令塔（仮）を建てる','巡回部隊（仮）を毎回倒して資材を集める']},
+    4:{t:'同盟ランキング中間集計',todo:['土曜の締めまでに貢献ポイントを稼ぐ','スキル振り直しアイテム（仮）を受け取る','研究所（仮）をLv10へ']},
+    5:{t:'変異体（仮）出現',todo:['日曜夜の変異体（仮）討伐に集合','防御系スキルを1段上げる','補給基地（仮）を最大に']},
+    6:{t:'施設 第3段階',todo:['防衛塔（仮）を建てる','拠点争奪戦（仮）で守る拠点を同盟で決める','資材を決戦用に温存し始める']},
+    7:{t:'決戦準備',todo:['加速アイテムを使い切らずに温存','部隊編成を決戦用に固める','集合時刻を全員に確認']},
+    8:{t:'決戦・シーズン終了',todo:['鉄の巨獣（仮）戦に参加','シーズン報酬の受け取り','余った資材の交換']}
+  };
+  var daily=[
+    {d:0,t:'12:00',n:'補給任務リセット',w:'受け取りと再受注',f:1},
+    {d:0,t:'21:00',n:'変異体（仮）討伐',w:'同盟で集合して討伐',f:5,hq:26},
+    {d:1,t:'20:00',n:'同盟研究の寄付ボーナス',w:'資材を寄付すると貢献2倍（仮）',f:1},
+    {d:2,t:'21:00',n:'巡回部隊（仮）出現',w:'見つけ次第倒して資材回収',f:2},
+    {d:3,t:'20:30',n:'拠点争奪戦（仮）',w:'10分前に集合、指示された拠点へ',f:3,hq:26},
+    {d:4,t:'21:00',n:'巡回部隊（仮）出現',w:'見つけ次第倒して資材回収',f:2},
+    {d:5,t:'20:00',n:'施設建設速度アップ',w:'施設の強化はこの時間に',f:2},
+    {d:6,t:'20:30',n:'拠点争奪戦（仮）',w:'10分前に集合、指示された拠点へ',f:3,hq:26},
+    {d:6,t:'22:00',n:'週間ランキング締め',w:'貢献ポイントの最終確認',f:1},
+    {d:6,t:'09:00',n:'週替わりショップ更新',w:'シーズン通貨で交換',f:1}
+  ];
+  var buffs=[
+    {w:[1,8],n:'シーズン開幕の加護（仮）',k:'prod',e:'資材生産 +10%'},
+    {w:[2,8],n:'研究所の恩恵（仮）',k:'prod',e:'研究速度 +5%（施設Lvで上昇）'},
+    {w:[3,8],n:'拠点占領ボーナス（仮）',k:'battle',e:'占領中の拠点数に応じて攻撃力 +2〜6%'},
+    {w:[5,8],n:'変異体の弱点（仮）',k:'battle',e:'変異体（仮）へのダメージ +15%'},
+    {w:[7,8],n:'決戦の号令（仮）',k:'battle',e:'部隊の行軍速度 +10%'}
+  ];
+  var prep={
+    '2w':{l:'2週間以上前',c:['鋼材・特殊合金を貯め始める（施設の初期建設用）','加速アイテムを使わずに温存','同盟の集合時刻と連絡手段を確認']},
+    '1w2':{l:'1〜2週間前',c:['本部レベルを26以上に（拠点争奪戦（仮）の参加条件）','部隊の編成を決め、治療施設を空ける','図鑑でシーズンの敵の特徴を確認']},
+    '1w':{l:'1週間以内',c:['シーズンスキルの振り方を決めておく','資源の受け取り忘れを回収','開幕直後のイベント時刻をメモ']},
+    'eve':{l:'前日〜当日',c:['開幕時刻をサーバー時間で確認','開幕したらすぐ研究所（仮）を建てる','最初の補給任務を受ける']}
+  };
+  var fac=[
+    {id:'lab',st:1,n:'研究所（仮）',e:'研究速度アップ（同盟全体）',lv:'まずLv5、第4週までにLv10'},
+    {id:'sup',st:1,n:'補給基地（仮）',e:'資材生産量アップ',lv:'Lv5で止めて他を優先、第5週に最大'},
+    {id:'cmd',st:2,n:'司令塔（仮）',e:'同盟の集結上限アップ',lv:'Lv5以上'},
+    {id:'tow',st:3,n:'防衛塔（仮）',e:'拠点の防衛力アップ',lv:'守る拠点の近くを優先'}
+  ];
+  var facOrder={ally:['lab','cmd','sup','tow'],self:['lab','tow','sup','cmd'],res:['sup','lab','cmd','tow']};
+  var skills={atk:{n:'突撃号令（仮）'},def:{n:'鉄壁陣形（仮）'},sup:{n:'迅速補給（仮）'}};
+  var skillPlan={
+    atk:[['第1〜2週','突撃号令（仮）を最大まで'],['第3〜5週','迅速補給（仮）を半分、残りを鉄壁陣形（仮）'],['第6〜8週','振り直しで決戦向けに攻撃寄せ']],
+    def:[['第1〜2週','鉄壁陣形（仮）を最大まで'],['第3〜5週','迅速補給（仮）を最大まで'],['第6〜8週','残りを突撃号令（仮）']],
+    sup:[['第1〜2週','迅速補給（仮）を最大まで'],['第3〜5週','鉄壁陣形（仮）を半分'],['第6〜8週','同盟の指示に合わせて振り直し']]
+  };
+  var zukan=[
+    {id:'lab',k:'施設',n:'研究所（仮）',a:['ラボ','研究所'],d:'同盟全体の研究速度を上げるシーズン施設。第1段階で解放。',h:210},
+    {id:'sup',k:'施設',n:'補給基地（仮）',a:['補給','基地'],d:'資材の生産量を上げる。第1段階で解放。',h:95},
+    {id:'cmd',k:'施設',n:'司令塔（仮）',a:['司令塔','タワー'],d:'同盟の集結上限を上げる。第2段階で解放。',h:30},
+    {id:'tow',k:'施設',n:'防衛塔（仮）',a:['防衛','塔'],d:'近くの拠点の防衛力を上げる。第3段階で解放。',h:0},
+    {id:'boss',k:'敵',n:'鉄の巨獣（仮）',a:['ボス','巨獣','シーズンボス'],d:'最終週に出現するシーズンボス。同盟全員で挑む。',h:350},
+    {id:'mut',k:'敵',n:'変異体（仮）',a:['変異体','ミュータント'],d:'第5週から日曜夜に出現。変異体の弱点（仮）バフが有効。',h:130},
+    {id:'pat',k:'敵',n:'巡回部隊（仮）',a:['巡回','パトロール'],d:'火・木の夜に出現し、倒すと資材を落とす。',h:60},
+    {id:'s-atk',k:'スキル',n:'突撃号令（仮）',a:['攻撃スキル'],d:'部隊の攻撃力 +10%（最大Lv）。',h:20},
+    {id:'s-def',k:'スキル',n:'鉄壁陣形（仮）',a:['防御スキル'],d:'受けるダメージ −8%（最大Lv）。',h:200},
+    {id:'s-sup',k:'スキル',n:'迅速補給（仮）',a:['支援スキル','治療'],d:'治療速度 +15%（最大Lv）。',h:120}
+  ];
+  function zById(id){for(var i=0;i<zukan.length;i++)if(zukan[i].id===id)return zukan[i];return null}
+
+  /* ---------- placeholder art ---------- */
+  function art(z){
+    var bg='hsl('+z.h+',20%,30%)',fg='hsl('+z.h+',35%,62%)',dk='hsl('+z.h+',20%,18%)',s='<svg viewBox="0 0 160 110" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+esc(z.n)+'"><rect width="160" height="110" fill="'+bg+'"/>';
+    if(z.k==='施設'){s+='<rect y="88" width="160" height="22" fill="'+dk+'"/><rect x="46" y="40" width="68" height="48" fill="'+fg+'"/><rect x="62" y="20" width="36" height="22" fill="'+fg+'"/><rect x="74" y="66" width="12" height="22" fill="'+dk+'"/><rect x="52" y="50" width="10" height="9" fill="'+dk+'"/><rect x="98" y="50" width="10" height="9" fill="'+dk+'"/><rect x="78" y="8" width="3" height="14" fill="#E8A23A"/>';}
+    else if(z.k==='敵'){s+='<ellipse cx="80" cy="96" rx="52" ry="8" fill="'+dk+'"/><path d="M40 92 Q36 44 80 34 Q124 44 120 92 Z" fill="'+fg+'"/><path d="M58 40 L50 18 L68 36 M102 40 L110 18 L92 36" fill="'+fg+'"/><circle cx="66" cy="60" r="6" fill="#E8A23A"/><circle cx="94" cy="60" r="6" fill="#E8A23A"/><path d="M62 78 L98 78" stroke="'+dk+'" stroke-width="4"/>';}
+    else{s+='<circle cx="80" cy="55" r="36" fill="'+dk+'" stroke="'+fg+'" stroke-width="5"/><path d="M80 30 L90 52 L112 55 L90 60 L80 82 L70 60 L48 55 L70 52 Z" fill="#E8A23A"/>';}
+    return s+'</svg>';
+  }
+  function shotsHtml(ids){
+    if(!ids||!ids.length)return '';
+    return '<div class="shots">'+ids.map(function(id){var z=zById(id);return '<button class="shot" type="button" data-z="'+id+'">'+art(z)+'<span>'+esc(z.n)+'</span></button>'}).join('')+'</div>';
+  }
+  var trustName={official:'公式',verified:'検証済み',player:'プレイヤー報告',stale:'要確認'};
+  function srcHtml(list){
+    return '<div class="sources"><span class="muted">出典 </span>'+list.map(function(s){return '<span class="src"><span class="badge b-'+s[0]+'">'+trustName[s[0]]+'</span>'+esc(s[1])+'（確認 '+s[2]+'）</span>'}).join('')+'</div>';
+  }
+  function openZ(id){var z=zById(id);$('#dlgBody').innerHTML=art(z)+'<h3 style="margin:10px 0 4px">'+esc(z.n)+'</h3><p class="muted" style="margin:0 0 6px;font-size:13px">'+z.k+'／別名：'+esc(z.a.join('、'))+'</p><p style="margin:0">'+esc(z.d)+'</p>';$('#dlg').showModal()}
+  $('#dlgClose').addEventListener('click',function(){$('#dlg').close()});
+
+  /* ---------- conditions ---------- */
+  var st={server:'720',phase:'auto',hq:'30',style:'atk',job:'eng'};
+  try{var sv=JSON.parse(localStorage.getItem('s7cond')||'null');if(sv)for(var kk in sv)st[kk]=sv[kk]}catch(e){}
+  st.hq='30';if(!st.job)st.job='eng';
+  var JOB={eng:'エンジニア',war:'戦争指導者'};
+  var TIPS={
+    eng:{week:'エンジニアは施設の建設・修理が速い（仮）ので、同盟施設の強化を担当しましょう。',fac:'エンジニアは施設強化の資材が少なくて済む（仮）ので、上の順で率先して上げましょう。',skill:'エンジニアは補給計画（仮）のスキルと相性が良い（仮）です。',day:'空いている時間は同盟施設の修理・強化を優先しましょう。',pre:'開幕直後に施設を建てる役になるので、鋼材を多めに貯めておきましょう。'},
+    war:{week:'戦争指導者は集結を主導する役（仮）です。拠点争奪戦（仮）の前に参加メンバーを確認しましょう。',fac:'戦争指導者は司令塔（仮）の効果が上がる（仮）ので、司令塔を早めに建てましょう。',skill:'戦争指導者は突撃計画（仮）のスキルと相性が良い（仮）です。',day:'イベントでは集合の号令役。開始15分前に声をかけましょう。',pre:'開幕週の集合時刻と役割分担を同盟で決めておきましょう。'}
+  };
+  var curTip='';
+  function save(){try{localStorage.setItem('s7cond',JSON.stringify(st))}catch(e){}}
+  function srvState(id){
+    var s=servers.filter(function(x){return x.id===id})[0]||servers[0];
+    var p=s.start.split('-');var start=new Date(+p[0],+p[1]-1,+p[2],0);
+    var days=Math.floor((TODAY-start)/86400000);
+    if(days<0)return {pre:true,until:-days,week:0,day:0,start:s.start};
+    return {pre:false,until:0,week:Math.min(8,Math.floor(days/7)+1),day:days%7+1,start:s.start};
+  }
+  function state(){
+    var s=srvState(st.server);
+    if(st.phase==='pre'){s={pre:true,until:s.pre?s.until:10,week:0,day:0,start:s.start,ov:true}}
+    else if(st.phase!=='auto'){s={pre:false,until:0,week:+st.phase,day:1,start:s.start,ov:true}}
+    return s;
+  }
+  function autoStage(s){return s.pre?'0':(s.week<=2?'1':s.week<=5?'2':'3')}
+  var SLOT={all:'一日中',m:'朝 6〜12時',d:'昼 12〜18時',n:'夜 18〜24時',l:'深夜 0〜6時'};
+  var STAGE={'0':'まだ未解放','1':'第1段階まで解放','2':'第2段階まで解放','3':'第3段階まで解放'};
+  var FOCUS={ally:'同盟への貢献',self:'自分の戦力',res:'資源の確保'};
+  var KIND={all:'すべて',battle:'戦闘',prod:'生産'};
+  var STY={atk:'突撃計画（仮）',def:'堅守計画（仮）',sup:'補給計画（仮）',unk:'まだ選んでいない'};
+
+  function fillCond(){
+    $('#cServer').innerHTML=servers.map(function(x){return '<option value="'+x.id+'">#'+x.id+'</option>'}).join('');
+    $('#cServer').value=st.server;$('#cJob').value=st.job;$('#cStyle').value=st.style;
+    var a=srvState(st.server),s=state();
+    var cur=s.pre?'pre':String(s.week),now=a.pre?'pre':String(a.week);
+    $('#wkBtns').innerHTML=['pre','1','2','3','4','5','6','7','8'].map(function(k){
+      return '<button type="button" data-ph="'+k+'" aria-pressed="'+(k===cur)+'" aria-label="'+(k==='pre'?'シーズン前':'第'+k+'週')+'">'+(k==='pre'?'前':k)+(k===now?'<small>いま</small>':'<small>&nbsp;</small>')+'</button>'}).join('');
+    var t=a.pre?'#'+st.server+' はシーズン開始まであと'+a.until+'日（開始 '+a.start.slice(5).replace('-','/')+'）':'#'+st.server+' はいま第'+a.week+'週・'+a.day+'日目（基準日 11/1）';
+    $('#condNow').innerHTML=esc(t)+(st.phase!=='auto'?'<br>表示中：'+(s.pre?'シーズン前':'第'+s.week+'週')+'　<button type="button" id="wkAuto">いまの週に戻す</button>':'');
+    renderSide(s);
+  }
+  function renderSide(s){
+    var w=s.pre?1:s.week,isNow=st.phase==='auto'&&!s.pre;
+    $('#evTitle').textContent=s.pre?'開幕週（第1週）のイベント':'第'+w+'週のイベント';
+    $('#wkTheme').textContent=s.pre?'シーズン前です。開幕後の予定を表示しています。':'テーマ：'+weeks[w].t;
+    var order=[1,2,3,4,5,6,0];if(isNow){var t0=TODAY.getDay();order=[0,1,2,3,4,5,6].map(function(i){return (t0+i)%7})}
+    var html='';
+    order.forEach(function(d){
+      var ev=daily.map(function(x,i){return {x:x,i:i}}).filter(function(o){return o.x.d===d&&o.x.f<=w}).sort(function(p,q){return p.x.t.localeCompare(q.x.t)});
+      if(!ev.length)return;
+      var today=isNow&&d===TODAY.getDay();
+      html+='<div class="evday'+(today?' today':'')+'">'+DOW[d]+'曜日'+(today?'（今日）':'')+'</div>'+ev.map(function(o){
+        return '<button type="button" class="ev" data-ev="'+o.i+'"><span class="tm">'+o.x.t+'</span><span>'+esc(o.x.n)+(!hqOk(o.x.hq)?' <span class="badge b-stale">Lv不足</span>':'')+'</span></button>'}).join('');
+    });
+    $('#evList').innerHTML=html||'<p class="muted" style="font-size:13px">この週の予定は登録されていません。</p>';
+    $('#bfList').innerHTML=buffs.filter(function(b){return w>=b.w[0]&&w<=b.w[1]}).map(function(b){return '<li>'+esc(b.n)+'：'+esc(b.e)+'</li>'}).join('');
+  }
+  ['cServer','cJob','cStyle'].forEach(function(id){
+    $('#'+id).addEventListener('change',function(e){var m={cServer:'server',cJob:'job',cStyle:'style'}[id];st[m]=e.target.value;if(id==='cServer')st.phase='auto';save();fillCond()});
+  });
+  $('.side').addEventListener('click',function(e){
+    var b=e.target.closest('[data-ph]');
+    if(b){var a=srvState(st.server),now=a.pre?'pre':String(a.week);st.phase=b.dataset.ph===now?'auto':b.dataset.ph;save();fillCond();return}
+    if(e.target.id==='wkAuto'){st.phase='auto';save();fillCond();return}
+    var ev=e.target.closest('[data-ev]');if(ev)evAnswer(+ev.dataset.ev);
+  });
+
+  /* ---------- answers ---------- */
+  var hqName={'25':'本部Lv25以下','29':'本部Lv26〜29','30':'本部Lv30以上'};
+  var styleName={atk:'突撃計画（仮）',def:'堅守計画（仮）',sup:'補給計画（仮）',unk:'未選択'};
+  function hqOk(req){return true}
+  function slotOf(t){var h=+t.split(':')[0];return h<6?'l':h<12?'m':h<18?'d':'n'}
+  function effWeek(v,s){if(v&&v!=='auto')return +v;return s.pre?0:s.week}
+  function evTable(list,w){
+    return '<div class="tbl-scroll"><table class="tl"><thead><tr><th>曜日・時刻</th><th>内容</th><th>やること</th></tr></thead><tbody>'+list.map(function(x){
+      var ng=!hqOk(x.hq);
+      return '<tr><th>'+DOW[x.d]+' '+x.t+'</th><td>'+esc(x.n)+(ng?'<br><span class="badge b-stale">参加条件 本部Lv26</span>':'')+'</td><td>'+esc(x.w)+'</td></tr>'}).join('')+'</tbody></table></div>';
+  }
+
+  function run(id,v,qText){
+    var s=state(),a={q:qText,chips:['#'+st.server],html:'',shots:[],src:[]};
+    if(id==='pre'){
+      var key=v.period;
+      if(key==='auto'){key=!s.pre?'eve':s.until>14?'2w':s.until>7?'1w2':s.until>1?'1w':'eve'}
+      a.chips.push(s.pre?'開始まであと'+s.until+'日':'開幕済み',JOB[st.job]);
+      a.html='<p><strong>'+prep[key].l+'</strong>にやることです。</p><ol>'+prep[key].c.map(function(c){return '<li>'+esc(c)+'</li>'}).join('')+'</ol>';
+      if(+st.hq<29)a.html+='<div class="warn-line">本部Lv25以下だと、第3週からの拠点争奪戦（仮）に参加できません。開幕までに本部を26以上にするのが最優先です。</div>';
+      a.html+='<h3>準備の流れ</h3><div class="tbl-scroll"><table class="tl"><tbody>'+['2w','1w2','1w','eve'].map(function(k){return '<tr'+(k===key?' class="now"':'')+'><th>'+prep[k].l+'</th><td>'+esc(prep[k].c[0])+' ほか</td></tr>'}).join('')+'</tbody></table></div>';
+      a.shots=['boss','lab'];a.src=[['official','シーズン告知画面','10/28'],['verified','〇〇さんのS7まとめ','10/30']];
+    }
+    else if(id==='week'){
+      var w=effWeek(v.week,s);
+      if(w===0){a.html='<p>まだシーズン前です。開幕後の第1週の内容を表示します。準備については「シーズンインに向けてやることは？」を見てください。</p>';w=1}
+      var wk=weeks[w];a.chips.push('第'+w+'週',JOB[st.job]);
+      a.html+='<p>第'+w+'週のテーマは<strong>'+esc(wk.t)+'</strong>です。優先順にやることは次のとおりです。</p><ol>'+wk.todo.map(function(c){return '<li>'+esc(c)+'</li>'}).join('')+'</ol>';
+      var ev=daily.filter(function(x){return x.f<=w}).sort(function(a,b){return a.d-b.d||a.t.localeCompare(b.t)});
+      a.html+='<h3>今週の曜日・時間の予定</h3>'+evTable(ev,w);
+      if(+st.hq<29&&w>=3)a.html+='<div class="warn-line">本部Lv25以下のため、印の付いたイベントには参加できません。</div>';
+      var bl=buffs.filter(function(b){return w>=b.w[0]&&w<=b.w[1]});
+      a.html+='<h3>今週有効なバフ</h3><ul>'+bl.map(function(b){return '<li>'+esc(b.n)+'：'+esc(b.e)+'</li>'}).join('')+'</ul>';
+      a.shots=w>=5?['mut','lab']:['lab','pat'];a.src=[['official','週次カレンダー画面','10/29'],['verified','同盟攻略メモ','10/31']];
+    }
+    else if(id==='day'){
+      var w2=s.pre?1:s.week,d=+v.day;
+      var hits=daily.filter(function(x){return x.d===d&&(v.slot==='all'||slotOf(x.t)===v.slot)}).sort(function(a,b){return a.t.localeCompare(b.t)});
+      var act=hits.filter(function(x){return x.f<=w2}),later=hits.filter(function(x){return x.f>w2});
+      a.chips.push(DOW[d]+'曜日',v.slot_t.replace(/\s.*/,''),'第'+w2+'週',JOB[st.job]);
+      if(act.length){a.html='<p>'+DOW[d]+'曜日の'+esc(v.slot_t)+'は、次の予定があります。</p>'+evTable(act,w2)}
+      else{
+        var s0={all:0,l:0,m:360,d:720,n:1080}[v.slot];var nxt=daily.filter(function(x){return x.f<=w2}).map(function(x){var k=((x.d-d+7)%7)*1440+(+x.t.slice(0,2))*60+(+x.t.slice(3))-s0;if(k<0)k+=7*1440;return {x:x,k:k}}).sort(function(a,b){return a.k-b.k})[0];
+        a.html='<p>この時間帯に決まったイベントはありません（第'+w2+'週時点の登録情報）。</p>'+(nxt?'<p>次の予定は <strong>'+DOW[nxt.x.d]+'曜 '+nxt.x.t+' の'+esc(nxt.x.n)+'</strong> です。</p>':'')+'<p>空いている時間は、施設の強化と巡回部隊（仮）の討伐を進めるのがおすすめです。</p>';
+      }
+      if(later.length)a.html+='<p class="muted" style="font-size:13px">この時間帯には、第'+later[0].f+'週から「'+esc(later[0].n)+'」も始まります。</p>';
+      a.html+='<p class="muted" style="font-size:13px">時刻はサーバー時間です。本番では日本時間も並べて表示します。</p>';
+      a.shots=act.some(function(x){return /変異体/.test(x.n)})?['mut']:act.some(function(x){return /巡回/.test(x.n)})?['pat']:[];
+      a.src=[['official','イベント告知画面','10/31']];
+    }
+    else if(id==='fac'){
+      var stg=+v.stage;a.chips.push(v.stage_t,v.focus_t+'重視');
+      if(stg===0){a.html='<p>シーズン施設はまだ解放されていません。開幕直後に研究所（仮）から建てられるよう、鋼材と特殊合金を貯めておきましょう。</p>';a.shots=['lab']}
+      else{
+        var ord=facOrder[v.focus].map(function(i){return fac.filter(function(f){return f.id===i})[0]}).filter(function(f){return f.st<=stg});
+        a.html='<p>'+esc(v.focus_t)+'を重視するなら、<strong>'+ord.map(function(f){return f.n}).join(' → ')+'</strong> の順です。</p><div class="tbl-scroll"><table class="tl"><thead><tr><th>順</th><th>施設</th><th>効果</th><th>目安</th></tr></thead><tbody>'+ord.map(function(f,i){return '<tr'+(i===0?' class="now"':'')+'><th>'+(i+1)+'</th><td>'+esc(f.n)+'</td><td>'+esc(f.e)+'</td><td>'+esc(f.lv)+'</td></tr>'}).join('')+'</tbody></table></div>';
+        var locked=fac.filter(function(f){return f.st>stg});
+        if(locked.length)a.html+='<p class="muted" style="font-size:13px">この先、'+locked.map(function(f){return f.n+'（第'+f.st+'段階）'}).join('、')+' が解放されます。</p>';
+        a.shots=ord.map(function(f){return f.id});
+      }
+      a.src=[['verified','施設画面スクショ ×3','10/30'],['player','〇〇さんのS7まとめ','10/20']];
+    }
+    else if(id==='buff'){
+      var w3=effWeek(v.week,s);if(w3===0){a.html='<p>シーズン前はシーズンバフはありません。第1週の内容を表示します。</p>';w3=1}
+      a.chips.push('第'+w3+'週',v.kind_t);
+      var bl2=buffs.filter(function(b){return w3>=b.w[0]&&w3<=b.w[1]&&(v.kind==='all'||b.k===v.kind)});
+      a.html+=bl2.length?'<div class="tbl-scroll"><table class="tl"><thead><tr><th>バフ</th><th>種類</th><th>効果</th><th>期間</th></tr></thead><tbody>'+bl2.map(function(b){return '<tr><th>'+esc(b.n)+'</th><td>'+(b.k==='battle'?'戦闘':'生産')+'</td><td>'+esc(b.e)+'</td><td>第'+b.w[0]+'〜'+b.w[1]+'週</td></tr>'}).join('')+'</tbody></table></div>':'<p>この条件で有効なバフは登録されていません。</p>';
+      var nb=buffs.filter(function(b){return b.w[0]>w3})[0];if(nb)a.html+='<p class="muted" style="font-size:13px">次は第'+nb.w[0]+'週から「'+esc(nb.n)+'」が加わります。</p>';
+      a.src=[['official','バフ一覧画面','10/29']];
+    }
+    else if(id==='skill'){
+      var sty=v.style==='unk'?'atk':v.style;a.chips.push(v.style_t,s.pre?'シーズン前':'第'+s.week+'週');
+      var cur=s.pre?-1:(s.week<=2?0:s.week<=5?1:2);
+      a.html=(v.style==='unk'?'<p>迷ったら同盟の推奨（攻撃型）に合わせるのがおすすめです。</p>':'')+'<p>スキルポイントは毎週月曜に付与（仮）されます。第4週の報酬（仮）で振り直しができるので、前半は思い切って1つに集中して大丈夫です。</p><div class="tbl-scroll"><table class="tl"><thead><tr><th>時期</th><th>振り方（'+esc(styleName[sty])+'）</th></tr></thead><tbody>'+skillPlan[sty].map(function(r,i){return '<tr'+(i===cur?' class="now"':'')+'><th>'+r[0]+(i===cur?'（いま）':'')+'</th><td>'+esc(r[1])+'</td></tr>'}).join('')+'</tbody></table></div>';
+      a.shots={atk:['s-atk','s-sup','s-def'],def:['s-def','s-sup','s-atk'],sup:['s-sup','s-def','s-atk']}[sty];
+      a.src=[['official','ゲーム内スキル説明','10/27'],['verified','検証ブログ（仮）','10/25']];
+    }
+    show(a);
+  }
+
+  /* ---------- chat ---------- */
+  var log=$('#log'),curFollow=null;
+  function userSay(t){var d=document.createElement('div');d.className='msg user';d.textContent=t;log.appendChild(d);log.scrollTop=log.scrollHeight}
+  function addBot(html){
+    var ty=document.createElement('div');ty.className='typing';ty.textContent='登録済みの情報を探しています…';log.appendChild(ty);log.scrollTop=log.scrollHeight;
+    setTimeout(function(){ty.remove();var d=document.createElement('div');d.className='msg bot';d.innerHTML='<div class="who">S7 作戦室</div>'+html;log.appendChild(d);d.scrollIntoView({block:'start',behavior:'smooth'})},350);
+  }
+  var fbHtml='<button class="btn ghost small" type="button" data-fb="評価を記録しました">役立った</button><button class="btn ghost small" type="button" data-fb="管理者に「情報が古い」と知らせました">情報が古い</button>';
+  function show(a){
+    var f=curFollow;curFollow=null;var tip=curTip;curTip='';
+    var btns=(f||[]).map(function(x){return '<button class="btn ghost small" type="button" data-follow="'+x[1]+'">'+esc(x[0])+'</button>'}).join('')+(a.noFb?'':fbHtml);
+    addBot('<article class="answer">'+(a.chips.length?'<header>'+a.chips.map(function(c){return '<span class="cchip">'+esc(c)+'</span>'}).join('')+'</header>':'')+'<div class="a-body">'+a.html+(tip?'<div class="warn-line" style="border-left-color:var(--steel)"><strong>'+esc(JOB[st.job])+'なら：</strong>'+esc(tip)+'</div>':'')+'</div>'+shotsHtml(a.shots)+(a.src.length?srcHtml(a.src):'')+(btns?'<div class="fb">'+btns+'</div>':'')+'</article>');
+  }
+  function go(id,v,q,follow,silent){if(!silent)userSay(q);curFollow=follow||null;curTip=(TIPS[st.job]||{})[id==='buff'?'':id]||'';run(id,v,q)}
+  function others(map,cur,pre,suf){return Object.keys(map).filter(function(k){return k!==cur&&k!=='unk'}).map(function(k){return [map[k]+suf,pre+k]})}
+  function askT(id,x,silent){
+    x=x||{};var s=state();
+    if(id==='pre')go(id,{period:'auto'},'シーズンインに向けてやることは？',null,silent);
+    else if(id==='week')go(id,{week:'auto'},s.pre?'開幕週は何をすればいい？':'第'+s.week+'週、今週やることは？',[['この週のバフを見る','buff:all']],silent);
+    else if(id==='day'){
+      if(x.day!=null){var sl=x.slot||'all';go(id,{day:String(x.day),slot:sl,slot_t:SLOT[sl]},DOW[x.day]+'曜日の'+SLOT[sl].replace(/\s.*/,'')+'はなにがある？',null,silent);return}
+      if(!silent)userSay('◯曜日の◯時になにがある？');
+      var o=DOW.map(function(d,i){return '<option value="'+i+'"'+(i===TODAY.getDay()?' selected':'')+'>'+d+'曜日'+(i===TODAY.getDay()?'（今日）':'')+'</option>'}).join('');
+      var o2=Object.keys(SLOT).map(function(k){return '<option value="'+k+'"'+(k==='n'?' selected':'')+'>'+SLOT[k]+'</option>'}).join('');
+      addBot('<div class="plain"><p>曜日と時間帯を選んでください。</p><select class="inl" data-k="day" aria-label="曜日">'+o+'</select><select class="inl" data-k="slot" aria-label="時間帯">'+o2+'</select><button class="btn small" type="button" data-pick="1">調べる</button></div>');
+    }
+    else if(id==='fac'){var stg=x.stage||autoStage(s),fc=x.focus||(st.style==='sup'?'res':st.style==='def'?'self':'ally');
+      go(id,{stage:stg,stage_t:STAGE[stg],focus:fc,focus_t:FOCUS[fc]},'シーズン施設は何から上げるべき？'+(x.focus?'（'+FOCUS[fc]+'重視）':''),others(FOCUS,fc,'fac:','重視で見る'),silent)}
+    else if(id==='buff'){var kd=x.kind||'all';go(id,{week:'auto',kind:kd,kind_t:KIND[kd]},'シーズンバフは？'+(kd!=='all'?'（'+KIND[kd]+'）':''),others(KIND,kd,'buff:','のバフだけ'),silent)}
+    else if(id==='skill'){var sy=x.style||st.style;go(id,{style:sy,style_t:STY[sy]},'シーズンスキルはいつどう振り分ける？'+(x.style?'（'+STY[sy]+'）':''),others(STY,sy==='unk'?'atk':sy,'skill:','ならどうする？'),silent)}
+  }
+  function evAnswer(i){
+    var x=daily[i],s=state(),w=s.pre?1:s.week;
+    userSay(DOW[x.d]+'曜 '+x.t+' の'+x.n+'は、なにをする？');
+    curFollow=[[DOW[x.d]+'曜日のほかの予定','day:'+x.d]];curTip=TIPS[st.job].day;
+    var shots=/変異体/.test(x.n)?['mut']:/巡回/.test(x.n)?['pat']:/施設/.test(x.n)?['lab','cmd']:[];
+    show({chips:['#'+st.server,'第'+w+'週',JOB[st.job]],
+      html:'<p><strong>'+esc(x.n)+'</strong>は'+DOW[x.d]+'曜日の'+x.t+'（サーバー時間）からです。</p><p>やること：'+esc(x.w)+'</p>'+(!hqOk(x.hq)?'<div class="warn-line">本部Lv26以上でないと参加できません。</div>':'')+(x.f>1?'<p class="muted" style="font-size:13px">第'+x.f+'週から始まるイベントです。</p>':''),
+      shots:shots,src:[['official','イベント告知画面','10/31']]});
+  }
+  var CH=[['pre','シーズンインに向けてやることは？'],['week','今週やることは？'],['day','◯曜日の◯時になにがある？'],['fac','シーズン施設は何から上げる？'],['buff','シーズンバフは？'],['skill','シーズンスキルはいつどう振る？']];
+  $('#chips').innerHTML=CH.map(function(c){return '<button class="chip" type="button" data-chip="'+c[0]+'">'+c[1]+'</button>'}).join('');
+  $('#chips').addEventListener('click',function(e){var b=e.target.closest('[data-chip]');if(b)askT(b.dataset.chip)});
+  log.addEventListener('click',function(e){
+    var z=e.target.closest('[data-z]');if(z){openZ(z.dataset.z);return}
+    var f=e.target.closest('[data-fb]');if(f){toast(f.dataset.fb);return}
+    var fo=e.target.closest('[data-follow]');if(fo){var p=fo.dataset.follow.split(':');
+      if(p[0]==='day')askT('day',{day:+p[1],slot:'all'});else if(p[0]==='fac')askT('fac',{focus:p[1]});else if(p[0]==='buff')askT('buff',{kind:p[1]});else if(p[0]==='skill')askT('skill',{style:p[1]});return}
+    var pk=e.target.closest('[data-pick]');if(pk){var box=pk.parentNode;askT('day',{day:+box.querySelector('[data-k=day]').value,slot:box.querySelector('[data-k=slot]').value});return}
+    var r=e.target.closest('[data-req]');if(r){r.disabled=true;r.textContent='送りました';var n=$('#stReq');n.textContent=+n.textContent+1;reqs.unshift([r.dataset.req,1,'未定','新規']);renderReq();toast('管理者に情報リクエストを送りました')}
+  });
+  addBot('<div class="plain"><p>シーズン7について質問してください。右側で週を選ぶと、その週のイベントが出ます。イベントを押すと、何をすればいいかを答えます。</p><p class="muted" style="font-size:13px">答えは管理者が確認した情報だけから出しています。</p></div>');
+
+  /* keyword */
+  var kwMap=[[/準備|シーズン前|シーズンイン/,'pre'],[/曜|何時|時間|朝|昼|夜|深夜/,'day'],[/今週|やること|何週/,'week'],[/施設|研究所|ラボ|補給|司令塔|防衛/,'fac'],[/バフ/,'buff'],[/スキル/,'skill']];
+  $('#kw').addEventListener('submit',function(e){
+    e.preventDefault();var q=$('#kwIn').value.trim();if(!q)return;$('#kwIn').value='';
+    userSay(q);
+    var m=kwMap.filter(function(k){return k[0].test(q)})[0];
+    var zs=zukan.filter(function(z){return z.n.indexOf(q)>=0||z.a.some(function(x){return q.indexOf(x)>=0||x.indexOf(q)>=0})||q.indexOf(z.k)>=0});
+    if(zs.length&&(!m||m[1]==='fac'&&zs.length===1)){show({chips:['図鑑'],html:'<p>図鑑に '+zs.length+'件 あります。画像を押すと詳しく見られます。</p>',shots:zs.map(function(z){return z.id}),src:[]});return}
+    if(m){
+      if(m[1]==='day'){var dm=q.match(/([日月火水木金土])曜/),sm=/深夜/.test(q)?'l':/朝/.test(q)?'m':/昼/.test(q)?'d':/夜/.test(q)?'n':'all';
+        if(dm){askT('day',{day:DOW.indexOf(dm[1]),slot:sm},true);return}
+        if(/今日/.test(q)){askT('day',{day:TODAY.getDay(),slot:sm},true);return}}
+      askT(m[1],null,true);return}
+    show({chips:[],html:'<p>この質問に答えられる情報はまだ登録されていません。推測ではお答えしません。</p><div class="fb" style="padding:0"><button class="btn small" type="button" data-req="'+esc(q)+'">管理者に情報リクエストを送る</button></div>',shots:[],src:[],noFb:true});
+  });
+
+  /* ---------- zukan ---------- */
+  var zf='all';
+  function renderZ(){$('#zgrid').innerHTML=zukan.filter(function(z){return zf==='all'||z.k===zf}).map(function(z){return '<button class="zcard" type="button" data-z="'+z.id+'">'+art(z)+'<span class="zt"><strong>'+esc(z.n)+'</strong><small>'+z.k+'</small></span></button>'}).join('')}
+  $('#zFilters').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;zf=b.dataset.f;$$('#zFilters button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});renderZ()});
+  $('#zgrid').addEventListener('click',function(e){var b=e.target.closest('[data-z]');if(b)openZ(b.dataset.z)});
+
+  /* ---------- admin ---------- */
+  var pending=2;
+  function renderPending(){$('#pendingN').textContent=pending?'未反映の変更 '+pending+'件':'すべて反映済み';$('#pubBtn').disabled=!pending}
+  $('#pubBtn').addEventListener('click',function(){pending=0;rows.forEach(function(r){if(r[5]==='反映待ち')r[5]='公開'});renderRows();renderPending();toast('みんなの画面に反映しました（データと画像をGitHubへ書き出し・擬似）')});
+  $('#subtabs').addEventListener('click',function(e){var b=e.target.closest('[data-sub]');if(!b)return;$$('#subtabs button').forEach(function(x){x.setAttribute('aria-selected',x===b?'true':'false')});$$('.sub').forEach(function(s){s.classList.toggle('active',s.id==='sub-'+b.dataset.sub)})});
+
+  var reqs=[['トレインの時間は？',6,'メンバーA','調査中'],['シーズン通貨の使い道は？',4,'未定','新規'],['拠点の占領ルールは？',3,'カニカフ','調査中'],['同盟ショップのおすすめは？',2,'未定','新規']];
+  function renderReq(){$('#reqTable tbody').innerHTML=reqs.map(function(r){return '<tr><td>'+esc(r[0])+'</td><td>'+r[1]+'</td><td><select aria-label="担当"><option'+(r[2]==='未定'?' selected':'')+'>未定</option><option'+(r[2]==='カニカフ'?' selected':'')+'>カニカフ</option><option'+(r[2]==='メンバーA'?' selected':'')+'>メンバーA</option></select></td><td>'+r[3]+'</td></tr>'}).join('')}
+
+  var rows=[
+    ['URL','公式お知らせ（仮）','スケジュール','official','10/28','公開','カニカフ'],
+    ['読み取り用画像','週次カレンダー画面','スケジュール','official','10/29','公開','メンバーA'],
+    ['両方','施設画面スクショ ×3','施設','verified','10/30','公開','メンバーB'],
+    ['見せる用画像','鉄の巨獣（仮）','敵','verified','10/30','反映待ち','メンバーB'],
+    ['URL','〇〇さんのS7まとめ','攻略','player','10/20','公開','メンバーC'],
+    ['読み取り用画像','ゲーム内スキル説明','スキル','official','10/27','反映待ち','カニカフ'],
+    ['読み取り用画像','第2週の攻略スクショ','攻略','stale','10/12','要確認','メンバーD']
+  ];
+  var lf='all';
+  function renderRows(){$('#srcTable tbody').innerHTML=rows.filter(function(r){return lf==='all'||(lf==='未'?r[5]!=='公開':(r[0].indexOf(lf)>=0||(r[0]==='両方'&&lf!=='URL')))}).map(function(r){return '<tr><td>'+r[0]+'</td><td>'+esc(r[1])+'</td><td>'+r[2]+'</td><td><span class="badge b-'+r[3]+'">'+trustName[r[3]]+'</span></td><td>'+r[4]+'</td><td>'+r[5]+'</td><td>'+r[6]+'</td></tr>'}).join('')}
+  $('#lFilters').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;lf=b.dataset.f;$$('#lFilters button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});renderRows()});
+  function addRow(r){rows.unshift(r);pending++;renderRows();renderPending()}
+
+  /* image registration */
+  function role(){return document.querySelector('input[name="irole"]:checked').value}
+  var STEPS={read:['アップロード','文字の読み取り','内容の確認','反映待ち'],show:['アップロード','情報を付ける','反映待ち'],both:['アップロード','文字の読み取り','情報を付ける','反映待ち']};
+  function drawPipe(n){var s=STEPS[role()];$('#pipe').innerHTML=s.map(function(t,i){return '<span class="step'+(i<n?' done':i===n?' doing':'')+'">'+t+'</span>'}).join('')}
+  $$('input[name="irole"]').forEach(function(r){r.addEventListener('change',function(){$('#ocrBox').style.display='none';$('#showBox').style.display='none';drawPipe(-1)})});
+  drawPipe(-1);
+  function startImg(){
+    $('#ocrBox').style.display='none';$('#showBox').style.display='none';drawPipe(0);
+    setTimeout(function(){drawPipe(1);if(role()==='show'){$('#showBox').style.display='block'}else{setTimeout(function(){drawPipe(2);$('#ocrBox').style.display='block'},700)}},500);
+  }
+  $('#drop').addEventListener('click',startImg);
+  $('#drop').addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();startImg()}});
+  $('#ocrGem').addEventListener('click',function(){toast('Geminiで読み直しました（表の行と列を整理・擬似）')});
+  $('#ocrNg').addEventListener('click',function(){$('#ocrBox').style.display='none';drawPipe(-1)});
+  $('#ocrOk').addEventListener('click',function(){
+    $('#ocrBox').style.display='none';
+    if(role()==='both'){drawPipe(2);$('#showBox').style.display='block';return}
+    drawPipe(3);addRow(['読み取り用画像','研究所 Lv5 画面','施設','verified','今日','反映待ち','カニカフ']);toast('登録しました。「反映」でみんなの画面に出ます');
+  });
+  $('#showDraft').addEventListener('click',function(){$('#sDesc').value='同盟全体の研究速度を上げるシーズン施設。第1段階で解放され、Lvが上がるほど効果が大きくなる（下書き・要確認）。';toast('説明の下書きを作りました。内容を確認してください')});
+  $('#showOk').addEventListener('click',function(){
+    $('#showBox').style.display='none';drawPipe(STEPS[role()].length-1);
+    addRow([role()==='both'?'両方':'見せる用画像',$('#sName').value||'名称未設定',$('#sKind').value,'verified','今日','反映待ち','カニカフ']);toast('図鑑に登録しました。「反映」でみんなの画面に出ます');
+  });
+  $('#addUrl').addEventListener('click',function(){
+    var u=$('#url').value.trim();if(!/^https?:\/\//.test(u)){toast('https:// から始まるURLを入力してください');return}
+    addRow(['URL',$('#urlTitle').value.trim()||u,'未分類',$('#urlTrust').value,'今日','反映待ち','カニカフ']);$('#url').value='';$('#urlTitle').value='';toast('URLを登録しました');
+  });
+
+  /* data tables */
+  function renderData(){
+    $('#srvTable tbody').innerHTML=servers.map(function(s){var x=srvState(s.id);return '<tr><td>#'+s.id+'</td><td><input type="date" value="'+s.start+'" data-srv="'+s.id+'" aria-label="開始日"></td><td>'+(x.pre?'シーズン前（あと'+x.until+'日）':'第'+x.week+'週・'+x.day+'日目')+'</td></tr>'}).join('');
+    var h='';for(var i=1;i<=8;i++)h+='<tr><th>第'+i+'週</th><td>'+esc(weeks[i].t)+'</td><td>'+weeks[i].todo.map(esc).join(' ／ ')+'</td></tr>';$('#wkTable tbody').innerHTML=h;
+    $('#dyTable tbody').innerHTML=daily.slice().sort(function(a,b){return a.d-b.d||a.t.localeCompare(b.t)}).map(function(x){return '<tr><td>'+DOW[x.d]+'</td><td>'+x.t+'</td><td>'+esc(x.n)+'</td><td>第'+x.f+'週〜</td></tr>'}).join('');
+  }
+  $('#srvTable').addEventListener('change',function(e){var i=e.target.dataset.srv;if(!i)return;servers.forEach(function(s){if(s.id===i)s.start=e.target.value});pending++;renderPending();renderData();fillCond();toast('開始日を変更しました（反映待ち）')});
+
+  var mems=[['カニカフ','kani***@gmail.com','オーナー'],['メンバーA','mem***@gmail.com','共同管理者'],['メンバーB','bxd***@gmail.com','共同管理者'],['メンバーC','ccc***@gmail.com','投稿者']];
+  function renderMem(){$('#memTable tbody').innerHTML=mems.map(function(m){return '<tr><td>'+esc(m[0])+'</td><td>'+esc(m[1])+'</td><td>'+(m[2]==='オーナー'?'オーナー':'<select aria-label="役割"><option'+(m[2]==='共同管理者'?' selected':'')+'>共同管理者</option><option'+(m[2]==='投稿者'?' selected':'')+'>投稿者</option><option>削除する</option></select>')+'</td></tr>'}).join('')}
+  $('#memAdd').addEventListener('click',function(){var m=$('#memMail').value.trim();if(!/@/.test(m)){toast('Googleアカウントのメールアドレスを入力してください');return}mems.push([m.split('@')[0],m,$('#memRole').value]);renderMem();$('#memMail').value='';toast($('#memRole').value+'として追加しました')});
+
+  /* ---------- spec toc ---------- */
+  $$('#doc h2').forEach(function(h){var b=document.createElement('button');b.type='button';b.textContent=h.textContent;b.addEventListener('click',function(){h.scrollIntoView({behavior:'smooth',block:'start'})});$('#toc').appendChild(b)});
+
+  /* ---------- routing ---------- */
+  var VIEWS=['home','ask','zukan','admin','spec'];
+  var NAV={
+    home:[],
+    ask:[['ask','調べる'],['zukan','図鑑'],['home','トップ']],
+    zukan:[['ask','調べる'],['zukan','図鑑'],['home','トップ']],
+    admin:[['admin','管理'],['spec','仕様書'],['home','トップ']],
+    spec:[['ask','みんなの画面'],['admin','管理'],['spec','仕様書'],['home','トップ']]
+  };
+  var LABEL={home:'ラストウォー シーズン7 情報ガイド',ask:'みんなの画面',zukan:'みんなの画面',admin:'管理者画面',spec:'仕様書'};
+  function route(){
+    var h=location.hash.replace('#','');if(VIEWS.indexOf(h)<0)h='home';
+    VIEWS.forEach(function(v){$('#view-'+v).classList.toggle('active',v===h)});
+    $('#nav').innerHTML=NAV[h].map(function(n){return '<a href="#'+n[0]+'"'+(n[0]===h?' aria-current="page"':'')+'>'+n[1]+'</a>'}).join('');
+    $('#modeLabel').textContent=LABEL[h];
+    window.scrollTo(0,0);
+  }
+  window.addEventListener('hashchange',route);
+
+  fillCond();renderZ();renderReq();renderRows();renderPending();renderData();renderMem();route();
+})();
+</script>
+</body>
+</html>
