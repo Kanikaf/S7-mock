@@ -303,10 +303,9 @@ dialog::backdrop{background:rgba(10,15,18,.6)}
     <div class="chat">
       <div class="log" id="log" aria-live="polite"></div>
       <div class="cfoot">
-      <div class="chips" id="chips"></div>
       <form class="composer" id="kw">
         <label for="kwIn" class="sr">質問</label>
-        <input id="kwIn" placeholder="質問を入力（例：今週やることは？ 水曜の夜は？ ボス）" autocomplete="off">
+        <input id="kwIn" placeholder="質問を入力" autocomplete="off">
         <button class="btn" type="submit">送る</button>
       </form>
       </div>
@@ -477,7 +476,7 @@ dialog::backdrop{background:rgba(10,15,18,.6)}
 <li><strong>質問のときにAIを呼ばない。</strong>答えは登録済みの表データと図鑑から組み立てる。利用者が何人いてもAPI費用はかからない</li>
 <li><strong>AIを使うのは登録作業だけ。</strong>画像の文字読み取りや説明の下書きに限り、使うのは管理者だけ</li>
 <li><strong>使う側は条件を選ぶ。</strong>自由入力より、サーバー・週・曜日・時間・状態を選ぶ方式を主にする</li>
-<li><strong>根拠を必ず見せる。</strong>答えには出典（画像・URL）、信頼区分、確認日を付ける</li>
+<li><strong>根拠は管理側で持つ。</strong>出典（画像・URL）、信頼区分、確認日は管理画面で管理し、みんなの画面の答えには表示しない</li>
 </ul>
 
 <h2>画面構成</h2>
@@ -485,7 +484,7 @@ dialog::backdrop{background:rgba(10,15,18,.6)}
 <thead><tr><th>入口</th><th>画面</th><th>使う人</th><th>内容</th></tr></thead>
 <tbody>
 <tr><td rowspan="1">トップ</td><td>入口の振り分け</td><td>全員</td><td>「みんなの画面」と「管理者」の2つの入口</td></tr>
-<tr><td rowspan="2">みんなの画面</td><td>調べる</td><td>全員（ログイン不要）</td><td>中央にチャット（質問ボタン・自由入力・答え）、右側に条件と週の選択、選んだ週のイベント一覧とバフ</td></tr>
+<tr><td rowspan="2">みんなの画面</td><td>調べる</td><td>全員（ログイン不要）</td><td>中央にチャット（自由入力・答え）、右側に条件と週の選択、選んだ週のイベント一覧とバフ</td></tr>
 <tr><td>図鑑</td><td>全員</td><td>シーズン施設・敵・スキルの画像と説明</td></tr>
 <tr><td rowspan="5">管理者</td><td>ダッシュボード</td><td>オーナー・共同管理者</td><td>答えられなかった質問、要確認、登録状況</td></tr>
 <tr><td>情報を登録</td><td>管理者・投稿者</td><td>画像（読み取り用／見せる用）、参照URL</td></tr>
@@ -516,7 +515,7 @@ dialog::backdrop{background:rgba(10,15,18,.6)}
 <tr><td>シーズンバフは？</td><td>週、種類（すべて／戦闘／生産）</td><td>バフ表</td></tr>
 <tr><td>シーズンスキルはいつどう振り分ける？</td><td>スタイル（週は条件から）</td><td>スキル表、振り分けルール、図鑑</td></tr>
 </tbody></table>
-<p>質問はチャット下のボタンか自由入力で行う。答えの下には「自分の戦力重視で見る」「戦闘のバフだけ」などの絞り込みボタンを出し、選ぶだけで条件を変えられるようにする。曜日・時間の質問は、チャット内に曜日と時間帯の選択欄を出して選んでもらう。右側のイベント一覧の項目を押すと、そのイベントで何をするかをチャットに答える。自由入力は「水曜の夜」「ボス」などの言葉から質問の種類や図鑑を判定し、該当がなければ情報リクエストとして管理者に送る。</p>
+<p>質問は自由入力で行う（質問候補のボタンは出さない）。答えの下には「自分の戦力重視で見る」「戦闘のバフだけ」などの絞り込みボタンを出し、選ぶだけで条件を変えられるようにする。曜日・時間の質問は、チャット内に曜日と時間帯の選択欄を出して選んでもらう。右側のイベント一覧の項目を押すと、そのイベントで何をするかをチャットに答える。自由入力は「水曜の夜」「ボス」などの言葉から質問の種類や図鑑を判定し、該当がなければ情報リクエストとして管理者に送る。</p>
 
 <h2>画像の扱い</h2>
 <table>
@@ -549,7 +548,7 @@ dialog::backdrop{background:rgba(10,15,18,.6)}
 <tbody>
 <tr><td>A-01</td><td>サーバーを選ぶと、シーズン前か第何週かを基準日から自動判定する</td><td class="pri p-must">必須</td></tr>
 <tr><td>A-02</td><td>6つの質問テンプレートを、選択肢を変えて実行できる</td><td class="pri p-must">必須</td></tr>
-<tr><td>A-03</td><td>答えに表・画像・出典・確認日を表示する</td><td class="pri p-must">必須</td></tr>
+<tr><td>A-03</td><td>答えに表と画像を表示する（出典はみんなの画面には出さない）</td><td class="pri p-must">必須</td></tr>
 <tr><td>A-04</td><td>職業・作戦計画に合わせたひと言アドバイスを答えに添える</td><td class="pri p-must">必須</td></tr>
 <tr><td>A-05</td><td>図鑑で施設・敵・スキルを画像付きで見られる</td><td class="pri p-must">必須</td></tr>
 <tr><td>A-06</td><td>答えがない場合は情報リクエストとして送れる</td><td class="pri p-must">必須</td></tr>
@@ -916,7 +915,7 @@ requests    : 質問, 件数, 担当, 状態</pre>
   function show(a){
     var f=curFollow;curFollow=null;var tip=curTip;curTip='';
     var btns=(f||[]).map(function(x){return '<button class="btn ghost small" type="button" data-follow="'+x[1]+'">'+esc(x[0])+'</button>'}).join('')+(a.noFb?'':fbHtml);
-    addBot('<article class="answer">'+(a.chips.length?'<header>'+a.chips.map(function(c){return '<span class="cchip">'+esc(c)+'</span>'}).join('')+'</header>':'')+'<div class="a-body">'+a.html+(tip?'<div class="warn-line" style="border-left-color:var(--steel)"><strong>'+esc(JOB[st.job])+'なら：</strong>'+esc(tip)+'</div>':'')+'</div>'+shotsHtml(a.shots)+(a.src.length?srcHtml(a.src):'')+(btns?'<div class="fb">'+btns+'</div>':'')+'</article>');
+    addBot('<article class="answer">'+(a.chips.length?'<header>'+a.chips.map(function(c){return '<span class="cchip">'+esc(c)+'</span>'}).join('')+'</header>':'')+'<div class="a-body">'+a.html+(tip?'<div class="warn-line" style="border-left-color:var(--steel)"><strong>'+esc(JOB[st.job])+'なら：</strong>'+esc(tip)+'</div>':'')+'</div>'+shotsHtml(a.shots)+(btns?'<div class="fb">'+btns+'</div>':'')+'</article>');
   }
   function go(id,v,q,follow,silent){if(!silent)userSay(q);curFollow=follow||null;curTip=(TIPS[st.job]||{})[id==='buff'?'':id]||'';run(id,v,q)}
   function others(map,cur,pre,suf){return Object.keys(map).filter(function(k){return k!==cur&&k!=='unk'}).map(function(k){return [map[k]+suf,pre+k]})}
@@ -946,8 +945,6 @@ requests    : 質問, 件数, 担当, 状態</pre>
       shots:shots,src:[['official','イベント告知画面','10/31']]});
   }
   var CH=[['pre','シーズンインに向けてやることは？'],['week','今週やることは？'],['day','◯曜日の◯時になにがある？'],['fac','シーズン施設は何から上げる？'],['buff','シーズンバフは？'],['skill','シーズンスキルはいつどう振る？']];
-  $('#chips').innerHTML=CH.map(function(c){return '<button class="chip" type="button" data-chip="'+c[0]+'">'+c[1]+'</button>'}).join('');
-  $('#chips').addEventListener('click',function(e){var b=e.target.closest('[data-chip]');if(b)askT(b.dataset.chip)});
   log.addEventListener('click',function(e){
     var z=e.target.closest('[data-z]');if(z){openZ(z.dataset.z);return}
     var f=e.target.closest('[data-fb]');if(f){toast(f.dataset.fb);return}
@@ -956,7 +953,7 @@ requests    : 質問, 件数, 担当, 状態</pre>
     var pk=e.target.closest('[data-pick]');if(pk){var box=pk.parentNode;askT('day',{day:+box.querySelector('[data-k=day]').value,slot:box.querySelector('[data-k=slot]').value});return}
     var r=e.target.closest('[data-req]');if(r){r.disabled=true;r.textContent='送りました';var n=$('#stReq');n.textContent=+n.textContent+1;reqs.unshift([r.dataset.req,1,'未定','新規']);renderReq();toast('管理者に情報リクエストを送りました')}
   });
-  addBot('<div class="plain"><p>シーズン7について質問してください。週を選ぶと、その週のイベントを見られます。イベントを押すと、何をすればいいかを答えます。</p><p class="muted" style="font-size:13px">答えは管理者が確認した情報だけから出しています。</p></div>');
+  addBot('<div class="plain"><p>シーズン7について質問してください。週を選ぶと、その週のイベントを見られます。イベントを押すと、何をすればいいかを答えます。</p><p class="muted" style="font-size:13px">例：「今週やることは？」「水曜の夜は？」「施設は何から上げる？」「スキルの振り方」「ボス」</p></div>');
 
   /* keyword */
   var kwMap=[[/準備|シーズン前|シーズンイン/,'pre'],[/曜|何時|時間|朝|昼|夜|深夜/,'day'],[/今週|やること|何週/,'week'],[/施設|研究所|ラボ|補給|司令塔|防衛/,'fac'],[/バフ/,'buff'],[/スキル/,'skill']];
